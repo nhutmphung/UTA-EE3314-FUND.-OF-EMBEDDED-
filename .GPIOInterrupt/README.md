@@ -4,7 +4,7 @@ Nearly all GPIO interrupt implemntation follow this pattern:
 
 ### 1) Congiure the GPIO Pin -> set the direction, pull up/down resistrs
 
-### 2) 2Congiure the EXTI Line (External Interrupt/Event) -> Map the GPIO pin to an external interrupt line
+### 2) Congiure the EXTI Line (External Interrupt/Event) -> Map the GPIO pin to an external interrupt line
 
 ### 3) Set trigger edge -> rising, falling, or both
 
@@ -14,7 +14,9 @@ Nearly all GPIO interrupt implemntation follow this pattern:
 
 ### 6) Clear the pending flag -> Required inside ISR, or the interrupt fires again immediately
 
-Clear visualization of the GPIO Interrupt Flow: 
+Visualization of the GPIO Interrupt Flow: 
 
 
-<img src="GPIOInterruptFlow.png" width="400">
+<img src="GPIOInterruptFlow.png" width="600">
+
+Lets dive into the example from the main.c code: 
