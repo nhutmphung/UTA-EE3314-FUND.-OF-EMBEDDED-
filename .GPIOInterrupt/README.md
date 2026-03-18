@@ -17,4 +17,4 @@ Nearly all GPIO interrupt implemntation follow this pattern:
 Clear visualization of the GPIO Interrupt Flow: 
 
 
-<img src="assets/martySupreme.jpeg" width="400">
+<img src="GPIOInterruptFlow" width="400">
