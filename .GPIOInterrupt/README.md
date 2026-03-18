@@ -19,4 +19,4 @@ Visualization of the GPIO Interrupt Flow:
 
 <img src="GPIOInterruptFlow.png" width="600">
 
-Lets dive into the example from the main.c code: 
+
