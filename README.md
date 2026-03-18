@@ -26,6 +26,7 @@ The main two symbols when using a pointer are the *&* and * operators.
 Example 1: 
 
     int x = 42;
+
     int *ptr = &x; //ptr holds the address of x (some random hex code) 
 
     printf("Value of x        : %d\n", x);
@@ -48,6 +49,7 @@ Value via *ptr    : 42
 After *ptr = 99, x is now: 99
 
 The 2 main reasons you use pointers are:
+
 1) No direct access to variable inside a function 
 
 Example: 
@@ -75,19 +77,56 @@ Example 2:
         printf("After : %d\n", x); // Output: 42  <-- x never changed!
         return 0;
     }
+
 C is passed by value, where functions always get a copy. The only way to modify it is to pass its address(pointer) so the function knows exactly where in the memory to make the change. 
 
 2) Avoiding expensive copies 
+
 When you pass a variable to a function without a pointer, C makes a full copy of it. For large data structures, its slow and wasteful
 
 // ❌ BAD - entire struct is copied every call (expensive!)
+
 void printStudent(Student s) { ... }
 
 // ✅ GOOD - only the address is passed (just 8 bytes!)
+
 void printStudent(Student *s) { ... }
 
 
 ### Bitwise Operations 
+There are 6 main bitwise operations in C: 
+
+& - AND - Clears the Bits (turning something off) 
+
+<img src="assets/bitclearing.png" width="400">
+
+| - OR - Set the bits (turning something on) 
+
+
+<img src="assets/bitsetting.png" width="400">
+
+
+^ - XOR - Toggle the bits (flip states)
+
+<img src="assets/bittoggling.png" width="400">
+
+~ - NOT - Invert the bits 
+
+<img src="assets/bitinverting.png" width="400">
+
+
+<< - Left Shift - Build bit mask
+
+<img src="assets/bitleftshift.png" width="400">
+
+
+>> - Right Shift - Extract bit mask 
+
+<img src="assets/bitrightshift.png" width="400">
+
+
+
+
 ### Bit shifting 
 ### Bit Masking 
 ### Type Qualifiers 
