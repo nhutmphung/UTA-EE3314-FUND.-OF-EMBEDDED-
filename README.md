@@ -14,8 +14,26 @@ The edge is just the **EXACT** moment of change - not while it's on, not while i
 
 
 ### Structs: Structures (strcuts for short) are data structures used to create user-defined data types in 'C'. They allow us to combine different data types.
+Main purpose are for data organization, modularity, and creation of complex data structures. 
 
 <img src="assets/carstruct.png" width="400">
+
+## Pointers
+
+
+
+### Bitwise Operations 
+### Bit shifting 
+### Bit Masking 
+### Type Qualifiers 
+
+## STM32 Architecture & Bare-metal Programming 
+
+### Memory Mapping 
+### Register Addressing 
+### Peripheral Clock/Enable Register 
+### GPIO Output Data Register
+
 
 ### NVIC 
 ### Polling 
@@ -23,10 +41,13 @@ The edge is just the **EXACT** moment of change - not while it's on, not while i
 ### Interrupt Priority 
 ### ISR 
 
-### HAL 
+### HAL(Hardware Abstraction Layer) : Allows us to create portable code that uses APIs to access peripherals and other hardware-specific registers (makes life so much easier) 
+
+<img src="assets/HAL.png" width="400">
 
 ### UART 
 
 ### USART
 
+### Timers 
 
