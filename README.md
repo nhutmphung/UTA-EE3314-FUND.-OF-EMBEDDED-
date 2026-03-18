@@ -41,7 +41,7 @@ Main purpose are for data organization, modularity, and creation of complex data
 ### Interrupt Priority 
 ### ISR 
 
-### HAL(Hardware Abstraction Layer) : Allows us to create portable code that uses APIs to access peripherals and other hardware-specific registers (makes life so much easier) 
+# HAL: The Hardware Abstraction Layer allows us to create portable code that uses APIs to access peripherals and other hardware-specific registers (makes life so much easier) 
 
 <img src="assets/HAL.png" width="400">
 
