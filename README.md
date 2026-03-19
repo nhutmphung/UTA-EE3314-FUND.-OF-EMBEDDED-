@@ -114,22 +114,83 @@ There are 6 main bitwise operations in C:
 
 <img src="assets/bitinverting.png" width="400">
 
+**Bit Shifting**
 
 << - Left Shift - Build bit mask
 
-<img src="assets/bitleftshift.png" width="400">
+<img src="assets/bitleftshift.png" width="600">
 
 
 >> - Right Shift - Extract bit mask 
 
-<img src="assets/bitrightshift.png" width="400">
+<img src="assets/bitrightshift.png" width="600">
 
+Right shifting with >> dose not *always* result in values being filled in with zeroes. 
 
+- If you right shift an unsigned type (ulong, uint, ushort, or byte) then the left end will always be filled with zeroes.
 
+- If you right shift a signed type (long, int, short, or sbyte) and the number is positive, then the left end will be filled with zeroes
 
-### Bit shifting 
-### Bit Masking 
+- However, if you right shift a signed type and the number is negative, then the left end will be filled with ones.  
+
+Shifting is just a efficient way to multiply or divide integers by the power of two. 
+
+Example: 
+
+//left shift 
+
+00000011 << 1 -> goes out to 00000110, which is 6
+
+00000011 << 2 -> goes out to 00001100, which is 12
+
+//right shift 
+
+00000110 >> 1 -> goes out to 00000011, which is 3
+
+00000110 >> 2 -> goes out to 00000001, which is 1 (technically 3/2 but it's 1 since it's an integer)
+
+Although it's a more efficient way for the computer to save speed and be efficient, it's lowkey used not that often just because of nomenclature. You want to make your code easy to read and universal to understand, so having 00000011 << 2 isn't as necessary as 3 * 4. Only use cases for this is if you are in the atmost extreme zero in all circumstances where you would need to treat all bits and memory to be super efficient. 
+
+<img src="assets/signedBitShift.png" width="600">
+
 ### Type Qualifiers 
+
+*const*: keyword used to make variables constant, meaning that their values **cannot** be changed after initialization. 
+
+- If you try to modify a const variable, the compiler will give you an error 
+
+- It helps to avoid accidental changes to important values in the program and helps the compilier optimize the code since it knows that the value won't change. 
+
+- You can use const with variables, pointers, function parameters, and class methods to make them unchangeable. 
+
+Example 1: 
+
+const uint32_t SYSTEM_CLOCK_HZ = 84000000UL; // 84 MHz, stored in Flash
+
+const uint8_t LOOKUP_TABLE[] = {0x00, 0x01, 0x03, 0x07, 0x0F}; // ROM table
+
+*volatile*: marks a variable whose value can change unexpectedly outside the normal program flow 
+
+- When we declare a variable as volatile, the compiler is instructed to *not* optimize the code involing this variable to ensure that every access to the variable is directly from its actual memory location 
+
+- Most comonly used for hardware registers, interrupts, or shared variables in multithreading. 
+
+Example 1: 
+
+// Without volatile, the compiler might optimize the loop away!
+volatile uint32_t *pGPIOA_IDR = (volatile uint32_t *)0x40020010;
+
+while ((*pGPIOA_IDR & (1 << 0)) == 0) {
+    // Wait for PA0 to go HIGH
+}
+
+**Const and volatile when using pointers** 
+When using pointers, const and volatile are important as to determine what the pointer can do. 
+
+volatile int * const ptr - this is a constant pointer, where the address CANNOT change, but the value AT that address CAN change
+
+const int * volatile ptr - this is a pointer whose address CAN change but the value AT the address CANNOT change 
+
 
 ## STM32 Architecture & Bare-metal Programming 
 
