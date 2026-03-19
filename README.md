@@ -3,25 +3,49 @@ by the professor Jon Mitchell.
 
 Some concepts and definitions to get you started for Fundamentals of Embedded Systems. 
 
-# Vocabulary 
+Content: 
+- [Rising Edge](#rising-edge)
+- [Falling Edge](#falling-edge-triggers-when-somethign-goes-from-true---false)
+- [Structs](#structs)
+- [Pointers](#pointer)
+- [Bitwise Operation](#bitwise-operations)
+- [Type Qualifiers](#type-qualifiers)
+- [Memory Mapping](#memory-mapping)
+- [Register Addressing](#register-addressing)
+- [Peripheral Clock/Enable Register](#peripheral-clockenable-register)
+- [GPIO Output Data Register](#gpio-output-data-register)
+- [NVIC](#nvic)
+- [Polling](#polling)
+- [Interrupts](#interrupts)
+- [Interrupt Priority](#interrupt-priority)
+- [ISR](#isr)
+- [HAL](#hal)
 
-### Rising Edge: Triggers when something goes from False -> True 
-### Falling Edge: Triggers when somethign goes from True -> False 
+
+
+
+
+
+
+### Rising Edge: 
+Triggers when something goes from False -> True 
+### Falling Edge: 
+Triggers when somethign goes from True -> False 
 
 The edge is just the **EXACT** moment of change - not while it's on, not while it's off, but the instant it switches. 
 
 <img src="assets/risingfallingedge.png" width="400">
 
 
-### Structs: Structures (strcuts for short) are data structures used to create user-defined data types in 'C'. They allow us to combine different data types.
+### Structs: 
+Structures (strcuts for short) are data structures used to create user-defined data types in 'C'. They allow us to combine different data types.
 
 Main purpose are for data organization, modularity, and creation of complex data structures. 
 
 <img src="assets/carstruct.png" width="400">
 
-## Pointers
-
-### Pointer: A variable that stores the **MEMORY ADDRESS** of another variable 
+### Pointer: 
+A variable that stores the **MEMORY ADDRESS** of another variable 
 
 The main two symbols when using a pointer are the *&* and * operators. 
 
@@ -224,7 +248,8 @@ const int * volatile ptr - this is a pointer whose address CAN change but the va
 
 ## Hardware Abstraction Layer
 
-### HAL: The Hardware Abstraction Layer allows us to create portable code that uses APIs to access peripherals and other hardware-specific registers (makes life so much easier) 
+### HAL: 
+The Hardware Abstraction Layer allows us to create portable code that uses APIs to access peripherals and other hardware-specific registers (makes life so much easier) 
 
 <img src="assets/HAL.png" width="400">
 
