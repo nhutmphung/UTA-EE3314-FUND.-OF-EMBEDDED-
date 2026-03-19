@@ -14,15 +14,21 @@ The edge is just the **EXACT** moment of change - not while it's on, not while i
 
 
 ### Structs: Structures (strcuts for short) are data structures used to create user-defined data types in 'C'. They allow us to combine different data types.
+
 Main purpose are for data organization, modularity, and creation of complex data structures. 
 
 <img src="assets/carstruct.png" width="400">
 
 ## Pointers
+
 ### Pointer: A variable that stores the **MEMORY ADDRESS** of another variable 
+
 The main two symbols when using a pointer are the *&* and * operators. 
+
 & - Gets the **MEMORY ADDRESS** of a variable 
+
 * - Gets the **VALUE** at the pointer's ADDRESS
+
 Example 1: 
 
     int x = 42;
@@ -30,22 +36,32 @@ Example 1:
     int *ptr = &x; //ptr holds the address of x (some random hex code) 
 
     printf("Value of x        : %d\n", x);
+
     printf("Address of x      : %p\n", (void*)&x);
+
     printf("ptr holds address : %p\n", (void*)ptr);
+
     printf("Value via *ptr    : %d\n", *ptr);
 
 
 Modifying the value through the pointer: 
+
 *ptr = 99; 
+
 printf("After *ptr = 99, x is now: %d\n", x);
 
 == Pointer Output == 
+
 Value of x        : 42
+
 Address of x      : 0x7ffee4b4a8ac
+
 ptr holds address : 0x7ffee4b4a8ac
+
 Value via *ptr    : 42
 
 === Modify via Pointer ===
+
 After *ptr = 99, x is now: 99
 
 The 2 main reasons you use pointers are:
