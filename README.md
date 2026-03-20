@@ -1,344 +1,304 @@
-# EE 3314 — Fundamentals of Embedded Systems
-> **University of Texas at Arlington** | Taught by **Professor Jon Mitchell**
+This is files/HWs for the class EE 3314 taught at UTA 
+by the professor Jon Mitchell. 
 
-This repository contains files and homework assignments for EE 3314.
-Below is a reference guide covering core concepts for embedded systems programming.
+Some concepts and definitions to get you started for Fundamentals of Embedded Systems. 
 
----
-
-## 📚 Table of Contents
-
-### 🔵 Core C Concepts
-- [Rising & Falling Edge](#rising--falling-edge)
+Content: 
+- [Rising Edge](#rising-edge)
+- [Falling Edge](#falling-edge-triggers-when-somethign-goes-from-true---false)
 - [Structs](#structs)
-- [Pointers](#pointers)
-- [Bitwise Operations](#bitwise-operations)
+- [Pointers](#pointer)
+- [Bitwise Operation](#bitwise-operations)
 - [Type Qualifiers](#type-qualifiers)
-
-### 🟠 STM32 Architecture & Bare-Metal Programming
 - [Memory Mapping](#memory-mapping)
 - [Register Addressing](#register-addressing)
-- [Peripheral Clock / Enable Register](#peripheral-clock--enable-register)
+- [Peripheral Clock/Enable Register](#peripheral-clockenable-register)
 - [GPIO Output Data Register](#gpio-output-data-register)
 - [NVIC](#nvic)
 - [Polling](#polling)
 - [Interrupts](#interrupts)
 - [Interrupt Priority](#interrupt-priority)
 - [ISR](#isr)
-
-### 🟢 Hardware Abstraction Layer
 - [HAL](#hal)
-- [UART](#uart)
-- [USART](#usart)
-- [Timers](#timers)
 
----
 
-## 🔵 Core C Concepts
 
----
+### Rising Edge: 
+Triggers when something goes from False -> True 
 
-### Rising & Falling Edge
+### Falling Edge: 
+Triggers when somethign goes from True -> False 
 
-| Edge | Trigger |
-|---|---|
-| **Rising Edge** | Signal goes from `LOW → HIGH` (False → True) |
-| **Falling Edge** | Signal goes from `HIGH → LOW` (True → False) |
-
-> 💡 The edge is the **exact instant** of change — not while it's HIGH, not while it's LOW, but the precise moment it switches.
+The edge is just the **EXACT** moment of change - not while it's on, not while it's off, but the instant it switches. 
 
 <img src="assets/risingfallingedge.png" width="400">
 
----
 
-### Structs
+### Structs: 
+Structures (strcuts for short) are data structures used to create user-defined data types in 'C'. They allow us to combine different data types.
 
-Structures (`struct` for short) are user-defined data types in C that let you **combine multiple different data types** into one grouped unit.
-
-**Main purposes:**
-- 📦 Data organization
-- 🔧 Modularity
-- 🏗️ Building complex data structures
+Main purpose are for data organization, modularity, and creation of complex data structures. 
 
 <img src="assets/carstruct.png" width="400">
 
----
+### Pointer: 
+A variable that stores the **MEMORY ADDRESS** of another variable 
 
-### Pointers
+The main two symbols when using a pointer are the *&* and * operators. 
 
-A **pointer** is a variable that stores the **memory address** of another variable.
+& - Gets the **MEMORY ADDRESS** of a variable 
 
-#### Key Operators
+* - Gets the **VALUE** at the pointer's ADDRESS
 
-| Operator | Name | What it does |
-|---|---|---|
-| `&` | Address-of | Gets the **memory address** of a variable |
-| `*` | Dereference | Gets the **value** stored at the pointer's address |
+Example 1: 
 
-#### Example — Basic Pointer Usage
+    int x = 42;
 
-```c
-int x = 42;
-int *ptr = &x; // ptr holds the address of x
+    int *ptr = &x; //ptr holds the address of x (some random hex code) 
 
-printf("Value of x        : %d\n", x);
-printf("Address of x      : %p\n", (void*)&x);
-printf("ptr holds address : %p\n", (void*)ptr);
-printf("Value via *ptr    : %d\n", *ptr);
+    printf("Value of x        : %d\n", x);
 
-// Modifying the value through the pointer
-*ptr = 99;
+    printf("Address of x      : %p\n", (void*)&x);
+
+    printf("ptr holds address : %p\n", (void*)ptr);
+
+    printf("Value via *ptr    : %d\n", *ptr);
+
+
+Modifying the value through the pointer: 
+
+*ptr = 99; 
+
 printf("After *ptr = 99, x is now: %d\n", x);
-```
 
-**Output:**
-```
+== Pointer Output == 
+
 Value of x        : 42
+
 Address of x      : 0x7ffee4b4a8ac
+
 ptr holds address : 0x7ffee4b4a8ac
+
 Value via *ptr    : 42
+
+=== Modify via Pointer ===
+
 After *ptr = 99, x is now: 99
-```
 
----
+The 2 main reasons you use pointers are:
 
-#### Why Use Pointers?
+1) No direct access to variable inside a function 
 
-**Reason 1 — Modifying a variable inside a function**
+Example: 
 
-C is **pass-by-value** — functions always receive a *copy* of the variable.
-The only way to modify the original is to pass its address.
+    void setToFive(int *ptr) {
+        *ptr = 5;  // only way to reach x from here
+    }
 
-```c
-// ❌ This does NOT modify the original x
-void changeValue(int x) {
-    x = 99; // only changes the local copy!
-}
+    int main() {
+        int x = 0;
+        setToFive(&x);
+        printf("%d\n", x); // Output: 5
+    }
 
-// ✅ This DOES modify the original x
-void setToFive(int *ptr) {
-    *ptr = 5; // modifies the value at the address
-}
+Example 2: 
 
-int main() {
-    int x = 0;
-    setToFive(&x);
-    printf("%d\n", x); // Output: 5
-}
-```
+    void changeValue(int x) {  // C makes a COPY of x here
+        x = 99;                // only changes the COPY, not the original!
+    }
 
-**Reason 2 — Avoiding expensive copies**
+    int main() {
+        int x = 42;
+        printf("Before: %d\n", x); // Output: 42
+        changeValue(x);
+        printf("After : %d\n", x); // Output: 42  <-- x never changed!
+        return 0;
+    }
 
-Passing large structs by value forces C to copy the entire thing — slow and wasteful.
+C is passed by value, where functions always get a copy. The only way to modify it is to pass its address(pointer) so the function knows exactly where in the memory to make the change. 
 
-```c
-// ❌ BAD — entire struct is copied every call
+2) Avoiding expensive copies 
+
+When you pass a variable to a function without a pointer, C makes a full copy of it. For large data structures, its slow and wasteful
+
+// ❌ BAD - entire struct is copied every call (expensive!)
+
 void printStudent(Student s) { ... }
 
-// ✅ GOOD — only the address is passed (just 8 bytes!)
+// ✅ GOOD - only the address is passed (just 8 bytes!)
+
 void printStudent(Student *s) { ... }
-```
 
----
 
-### Bitwise Operations
+### Bitwise Operations 
+There are 6 main bitwise operations in C: 
 
-There are **6 main bitwise operations** in C:
+& - AND - Clears the Bits (turning something off) 
 
-| Operator | Name | Purpose |
-|---|---|---|
-| `&` | AND | Clear bits (turn something **off**) |
-| `\|` | OR | Set bits (turn something **on**) |
-| `^` | XOR | Toggle bits (flip state) |
-| `~` | NOT | Invert all bits |
-| `<<` | Left Shift | Build a bit mask / multiply by power of 2 |
-| `>>` | Right Shift | Extract a bit mask / divide by power of 2 |
-
----
-
-#### AND — Clearing Bits
 <img src="assets/bitclearing.png" width="400">
 
-#### OR — Setting Bits
+| - OR - Set the bits (turning something on) 
+
+
 <img src="assets/bitsetting.png" width="400">
 
-#### XOR — Toggling Bits
+
+^ - XOR - Toggle the bits (flip states)
+
 <img src="assets/bittoggling.png" width="400">
 
-#### NOT — Inverting Bits
+~ - NOT - Invert the bits 
+
 <img src="assets/bitinverting.png" width="400">
 
----
+**Bit Shifting**
 
-#### Bit Shifting
-
-**Left Shift `<<`** — shifts bits to the left, filling with `0`s on the right
+<< - Left Shift - Build bit mask
 
 <img src="assets/bitleftshift.png" width="600">
 
-**Right Shift `>>`** — shifts bits to the right
+
+>> - Right Shift - Extract bit mask 
 
 <img src="assets/bitrightshift.png" width="600">
 
-> ⚠️ Right shifting doesn't *always* fill with zeroes:
-> - **Unsigned types** (`uint`, `ulong`, etc.) → always fills with `0`
-> - **Signed positive numbers** → fills with `0`
-> - **Signed negative numbers** → fills with `1` (arithmetic shift)
+Right shifting with >> dose not *always* result in values being filled in with zeroes. 
+
+- If you right shift an unsigned type (ulong, uint, ushort, or byte) then the left end will always be filled with zeroes.
+
+- If you right shift a signed type (long, int, short, or sbyte) and the number is positive, then the left end will be filled with zeroes
+
+- However, if you right shift a signed type and the number is negative, then the left end will be filled with ones.  
+
+Shifting is just a efficient way to multiply or divide integers by the power of two. 
+
+Example: 
+
+//left shift 
+
+00000011 << 1 -> goes out to 00000110, which is 6
+
+00000011 << 2 -> goes out to 00001100, which is 12
+
+//right shift 
+
+00000110 >> 1 -> goes out to 00000011, which is 3
+
+00000110 >> 2 -> goes out to 00000001, which is 1 (technically 3/2 but it's 1 since it's an integer)
+
+Although it's a more efficient way for the computer to save speed and be efficient, it's lowkey used not that often just because of nomenclature. You want to make your code easy to read and universal to understand, so having 00000011 << 2 isn't as necessary as 3 * 4. Only use cases for this is if you are in the atmost extreme zero in all circumstances where you would need to treat all bits and memory to be super efficient. 
 
 <img src="assets/signedBitShift.png" width="600">
 
-#### Shift Examples
+### Type Qualifiers 
 
-```c
-// Left Shift (multiply by power of 2)
-00000011 << 1  →  00000110  =  6
-00000011 << 2  →  00001100  =  12
+*const*: keyword used to make variables constant, meaning that their values **cannot** be changed after initialization. 
 
-// Right Shift (divide by power of 2)
-00000110 >> 1  →  00000011  =  3
-00000110 >> 2  →  00000001  =  1  // integer division, remainder dropped
-```
+- If you try to modify a const variable, the compiler will give you an error 
 
-> 📝 **When to use bit shifting?**
-> Shifting is more CPU-efficient than multiplication/division, but use it sparingly.
-> Code like `3 * 4` is far more readable than `00000011 << 2`.
-> Reserve bit shifting for cases where **every cycle and byte truly counts**.
+- It helps to avoid accidental changes to important values in the program and helps the compilier optimize the code since it knows that the value won't change. 
 
----
+- You can use const with variables, pointers, function parameters, and class methods to make them unchangeable. 
 
-### Type Qualifiers
+Example 1: 
 
-#### `const` — Read-Only Variable
+const uint32_t SYSTEM_CLOCK_HZ = 84000000UL; // 84 MHz, stored in Flash
 
-Makes a variable **unchangeable after initialization**. The compiler will throw an error if you try to modify it.
-
-**Benefits:**
-- Prevents accidental modification of important values
-- Allows the compiler to optimize (it knows the value won't change)
-- `const` globals are stored in **Flash**, not RAM — saves memory
-
-```c
-const uint32_t SYSTEM_CLOCK_HZ = 84000000UL;       // 84 MHz, stored in Flash
 const uint8_t LOOKUP_TABLE[] = {0x00, 0x01, 0x03, 0x07, 0x0F}; // ROM table
-```
 
----
+*volatile*: marks a variable whose value can change unexpectedly outside the normal program flow 
 
-#### `volatile` — Always Read From Memory
+- When we declare a variable as volatile, the compiler is instructed to *not* optimize the code involing this variable to ensure that every access to the variable is directly from its actual memory location 
 
-Tells the compiler **never to optimize** accesses to this variable — always read/write directly from its actual memory location.
+- Most comonly used for hardware registers, interrupts, or shared variables in multithreading. 
 
-**Most common use cases:**
-- Hardware registers (hardware can change them at any time)
-- ISR-shared variables
-- DMA buffers
+Example 1: 
 
-```c
-// Without volatile, the compiler might optimize this loop away entirely!
+// Without volatile, the compiler might optimize the loop away!
 volatile uint32_t *pGPIOA_IDR = (volatile uint32_t *)0x40020010;
 
 while ((*pGPIOA_IDR & (1 << 0)) == 0) {
     // Wait for PA0 to go HIGH
 }
-```
 
----
+**Const and volatile when using pointers** 
+When using pointers, const and volatile are important as to determine what the pointer can do. 
 
-#### `const` + `volatile` with Pointers
+volatile int * const ptr - this is a constant pointer, where the address CANNOT change, but the value AT that address CAN change
 
-When used with pointers, the **position** of `const`/`volatile` determines what is protected:
+const int * volatile ptr - this is a pointer whose address CAN change but the value AT the address CANNOT change 
 
-| Declaration | Address | Value at Address |
-|---|---|---|
-| `volatile int * const ptr` | ❌ Cannot change | ✅ Can change |
-| `const int * volatile ptr` | ✅ Can change | ❌ Cannot change |
 
-> 💡 Think of it this way: whatever keyword is **directly before** `*` applies to the **value**; whatever is **after** `*` applies to the **pointer itself**.
+## STM32 Architecture & Bare-metal Programming 
 
----
-
-## 🟠 STM32 Architecture & Bare-Metal Programming
-
----
-
-### Memory Mapping
-
-*(Content coming soon)*
-
----
-
-### Register Addressing
-
-*(Content coming soon)*
-
----
-
-### Peripheral Clock / Enable Register
-
-*(Content coming soon)*
-
----
-
+### Memory Mapping 
+### Register Addressing 
+### Peripheral Clock/Enable Register 
 ### GPIO Output Data Register
 
-*(Content coming soon)*
 
----
+### NVIC:
+The Nested Vectored Interrupt Controller is a built-in ARM cortext-m component that handles all interrupts, prioritizing them, and enabling preemption(high-prio interrupting lower-prio) 
 
-### NVIC
+### Polling:
+Polling is the status of continuous monitoring. It's whenever the microcontroller keeps on checking the status of other devices, and while doing so, it does nothing else and consumes all the processing time for monitoring. Interrupts are used to help this.
 
-*(Content coming soon)*
 
----
+### Interrupts: 
+An interrupt is an asynchornous event, either by hardware(button press) or software(system call or dividing by zero) that temporarily **halts** a normal program execution to do a **higher-priority** task.
 
-### Polling
+It then starts the execution of the Interrupt Service Routine (ISR)/Interrupt Handler (same thing) to execute whatever function/code you want it to do 
 
-*(Content coming soon)*
+Some of the key-features include:
+- Event driven execution
+- Fast response 
+- Improved CPU Efficienciy 
+- Enabling real-time behavior 
 
----
+<img src="assets/interruptimage.jpeg" width="600">
 
-### Interrupts
+### EXTI: 
+EXTI (External Interrupts) are GPIO pins that can be configured to trigger interrupts on rising, falling, or both edges. Each pin connects to an EXTI line.
 
-*(Content coming soon)*
+### ISR:
+The function/code that executes whenever an interrupt occurs. They are usually short and usually setting a flag to process the data in the main loop 
 
----
+### Callback Functions: 
+In the STM32 HAL library, the HAL_GPIO_EXTI_Callback() is most commonly used to handle the external interrupts after the main handler clears the flag. 
 
-### Interrupt Priority
+**Steps to implement interrupts (STM32CubeIDE Specific)**
+1. Configure the PIN : In IOC file, set GPIO to GPIO_EXTI mode
 
-*(Content coming soon)*
+2. Enable Interrupt: In NVIC configuration, enable the corresponding EXTI line interrupt
 
----
+3. Configure trigger: Set edge detection in GPIO settings
 
-### ISR
+4. Implement Handler: Override the HAL_GPIO_Exti-callback in main.c or a user file to execute the event 
 
-*(Content coming soon)*
+Great Example with CubeMX: [STM32Wiki MCU](https://wiki.st.com/stm32mcu/wiki/Getting_started_with_EXTI)
 
----
+Great Video Example by Terminal Two: [Interrupts | #8 STM32 GPIO Button Interrupt](https://www.youtube.com/watch?v=qd_tevhJ2eE)
 
-## 🟢 Hardware Abstraction Layer
+Example Code: 
 
----
+<img src="assets/interrupt1.png" width="600">
+<img src="assets/interrupt2.png" width="600">
+<img src="assets/interrupt3.png" width="600">
+<img src="assets/interrupt4.png" width="600">
 
-### HAL
 
-The **Hardware Abstraction Layer** lets you write **portable code** using APIs to access peripherals and hardware-specific registers — without needing to manually manipulate every register yourself.
+
+
+## Hardware Abstraction Layer
+
+### HAL: 
+The Hardware Abstraction Layer allows us to create portable code that uses APIs to access peripherals and other hardware-specific registers (makes life so much easier) 
 
 <img src="assets/HAL.png" width="400">
 
----
-
-### UART
-
-*(Content coming soon)*
-
----
+### UART 
 
 ### USART
 
-*(Content coming soon)*
+### Timers 
 
----
-
-### Timers
-
-*(Content coming soon)*
