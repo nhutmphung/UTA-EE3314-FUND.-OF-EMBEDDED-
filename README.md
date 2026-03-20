@@ -299,7 +299,7 @@ Once triggered, it executes the **Interrupt Service Routine (ISR)** to handle wh
 - 🧠 Improved CPU efficiency
 - ⏱️ Enables real-time behavior
 
-<img src="assets/interruptimage.jpeg" width="600">
+<img src="assets/interruptimage.jpg" width="400">
 
 ---
 
@@ -341,10 +341,10 @@ In the STM32 HAL library, `HAL_GPIO_EXTI_Callback()` is the most commonly used f
 
 **Example Code:**
 
-<img src="assets/interrupt1.png" width="600">
-<img src="assets/interrupt2.png" width="600">
-<img src="assets/interrupt3.png" width="600">
-<img src="assets/interrupt4.png" width="600">
+<img src="assets/interrupt1.png" width="400">
+<img src="assets/interrupt2.png" width="400">
+<img src="assets/interrupt3.png" width="400">
+<img src="assets/interrupt4.png" width="400">
 
 ---
 
