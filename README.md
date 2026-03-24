@@ -29,7 +29,7 @@
 
 ---
 
-##  Signal Edges
+## ⚡ Signal Edges
 
 ### Rising Edge
 > Triggers when a signal transitions **False → True** (LOW to HIGH)
@@ -255,16 +255,16 @@ while ((*pGPIOA_IDR & (1 << 0)) == 0) {
 ## 🏛️ STM32 Architecture & Bare-Metal Programming
 
 ### Memory Mapping
->  *Coming soon*
+> 🚧 *Coming soon*
 
 ### Register Addressing
->  *Coming soon*
+> 🚧 *Coming soon*
 
 ### Peripheral Clock/Enable Register
->  *Coming soon*
+> 🚧 *Coming soon*
 
 ### GPIO Output Data Register
->  *Coming soon*
+> 🚧 *Coming soon*
 
 ---
 
@@ -299,7 +299,7 @@ Once triggered, it executes the **Interrupt Service Routine (ISR)** to handle wh
 - 🧠 Improved CPU efficiency
 - ⏱️ Enables real-time behavior
 
-<img src="assets/interruptimage.jpg" width="400">
+<img src="assets/interruptimage.jpeg" width="600">
 
 ---
 
@@ -341,10 +341,10 @@ In the STM32 HAL library, `HAL_GPIO_EXTI_Callback()` is the most commonly used f
 
 **Example Code:**
 
-<img src="assets/interrupt1.png" width="400">
-<img src="assets/interrupt2.png" width="400">
-<img src="assets/interrupt3.png" width="400">
-<img src="assets/interrupt4.png" width="400">
+<img src="assets/interrupt1.png" width="600">
+<img src="assets/interrupt2.png" width="600">
+<img src="assets/interrupt3.png" width="600">
+<img src="assets/interrupt4.png" width="600">
 
 ---
 
@@ -360,14 +360,69 @@ The **Hardware Abstraction Layer** lets you write **portable code** using APIs t
 
 ---
 
+### Parallel Data:
+Multiple bits of data being sent simultaneously over several wires (typically 8, 16, or 32) 
+
+- Very fast because you move a whole set of data in a single clock tick 
+
+- The catch: requires a lot of wires and if the wires are too long, the signals can get jumbled. 
+
+- Think of paralle Data like having multiple doors for the bits to go through 
+
+<img src="assets/parallel_data.jpg" width="400">
+
+---
+
+### Serial Data:
+Data bits are sent one after another, in a single line, over a single wire. 
+
+- Typically only needs two wires, which is cheaper and takes up less space. Modern tech like USB or SATA have become so fast that serial communication is now the standard for almost everything 
+
+- The catch: It's technically slower per "tick" but since we engineered it to be so fast, the speed makes up for it.
+
+<img src="assets/serial_comm.png" width="400">
+
+---
+
 ### UART
->  *Coming soon*
+> A hardware communication protocol that uses asynchrnouns serial communication with configurable speed. Asynchronous meaning there is no clock signal to synchronize the output bits from the transmitting device going to the receiving end. 
+
+- Instead of clock cycles, it uses pre-agreed speeds (baud rates) to start/stop bits to synchronize the communication. 
+
+- Baud rate is the measure of the speeed of data transfer, expressed in bits per second.
+
+- It is extensively usedi n embedded systems to connect sensors, bluetooth modules, and GPS units to microcontrollers 
+
+- It is also commonly uses for Serial debugging allowing developers to monitor and control devices via tool's like the Arduino Serial Monitor
+
+The two signals of UART device are called: 
+- Transimitter (TX)
+- Receiver (RX)
+
+At the transmitter, the UART converts parallel data (e.g an 8-bit bye) into a serial streams of bits for transmission over the TX line. 
+
+At the receiver, the process is reversed, building the original parallel data from the incoming serial bits. 
+
+<img src="assets/UART-diagram.png" width="400">
+
+<img src="assets/uart2.png" width="400">
+
+---
 
 ### USART
->  *Coming soon*
+> The Universal Synchronous/Asynchronous Receiver-Transmitter is the versatile version of UART that can operate in both asynchronous and synchronous modes. 
+
+- A USART is just a UART that has a clock signal 
+
+- In the synchronous mode, the USART sends a clock signal along with the data on a seperate wire. This allows the receiver and trasmitter to stay perfectly in step. 
+
+- It can reach faster data rates- often 4 Mbps or more, compared to the 115.2 kbps like the standard UART. 
+
+<img src="assets/usart.png" width="400">
+
 
 ### Timers
->  *Coming soon*
+> 🚧 *Coming soon*
 
 ---
 
