@@ -422,7 +422,75 @@ At the receiver, the process is reversed, building the original parallel data fr
 
 
 ### Timers
-> 🚧 *Coming soon*
+3 Main Components: 
+
+1) f.clk (Input Clock): This is the frequnecy of the clock signal coming from the internal bus (usually APB1 or APB2) 
+
+2) PSC (Prescaler) : A 16-bit register that divides the input clock to slow it down. 
+
+3) ARR (Auto-REload Register): The value at which the counter resets to zero and triggers an "Update Event" (Interrupt) 
+
+<img src="assets/timer_main_formulas.png" width="400">
+
+To Solve for PSC and ARR: 
+
+- 1. Identify the f.clk 
+- 2. Choose a target frequency (1 Hz = 1 second-delay)
+- 3. Rearrange the formula: (PSC + 1)*(ARR + 1) = (f.clk)/f.update
+- 4. Pick a value for PSC: Since both PSC and ARR are usually 16 bit (max 65,535) choose a PSC that makes the math and keeps ARR under 65,535
+
+Practical Example: Toggle an LED every 1 second
+Given:
+
+System Clock (f.clk) : 72 MHz (72,000,000)  
+
+​Target Frequency (f.uodate):  1 Hz
+
+Step 1: Calculate the total divisor needed.
+ 
+ 72,000,000 / 1 = 72,000,000
+
+Step 2: Split the divisor between PSC and ARR.
+
+We need (PSC+1)⋅(ARR+1)=72,000,000.
+
+Since 72,000,000 is larger than a 16-bit register (65,535), we must use both registers.
+
+Let's set PSC = 7199.
+
+PSC + 1=7200 
+
+Now solve for ARR: 
+
+7200⋅(ARR+1)=72,000,000
+ARR = (72,000,000 / 7200) - 1
+
+Final Values:
+
+PSC = 7199
+ARR = 9999
+
+STM32 Implementation: 
+
+TIM_HandleTypeDef htim2;
+
+    void MX_TIM2_Init(void)
+    {
+    htim2.Instance = TIM2;
+    // Clock is 72MHz. Resulting frequency = 72MHz / (7199 + 1) / (9999 + 1) = 1Hz
+    htim2.Init.Prescaler = 7199; 
+    htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim2.Init.Period = 9999; // This is the ARR value
+    htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    
+    if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+    {
+        Error_Handler();
+    }
+    }
+
+
 
 ---
 
