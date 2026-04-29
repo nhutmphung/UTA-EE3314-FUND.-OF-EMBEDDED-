@@ -1,6 +1,6 @@
 Final graph of serial plotter CIenTi of control function: 
 
-<img src="PIDSIMpart2.png" width="400">
+<img src="EE3314\PIDSimPart2\PIDSim\PIDSIMpart2.png" width="400">
 
 Chosen values were: 
 
@@ -10,7 +10,7 @@ Kd = 0.4;
 
 Matlab simulation graph: 
 
-<img src="matlabPIDSim.png" width="400">
+<img src="EE3314\PIDSimPart2\PIDSim\matlabPIDSim.png" width="400">
 
 matlab code:
 
