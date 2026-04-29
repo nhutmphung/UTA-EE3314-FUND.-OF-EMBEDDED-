@@ -49,9 +49,9 @@
 /* USER CODE BEGIN PV */
 
 // ── PID Gains ── Tune these freely ──────────────────────────────────────────
-#define KP  2.0f
-#define KI  1.0f
-#define KD  2.0f
+#define KP  0.6f
+#define KI  0.5f
+#define KD  0.4f
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ── Closed-loop plant states (with PID controller) ──────────────────────────
@@ -252,7 +252,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         ox3 += odx3 * dt;
 
         // Open-loop plant output
-        oy = 100.0f * ox1;
+        oy = (100.0f * ox1) / 10.0f;
     }
 
     // ── TIM6: Square wave reference command (every 5 seconds) ───────────────
